@@ -8,7 +8,8 @@ local extra_headers_auth_json = { "Content-Type: application/json", "Authorizati
 -- stats to mapserver
 function api.send_stats(stats, callback)
     http.fetch({
-        url = url .. "/api/luanti/stats",
+        -- Mapserver 4.10.0 exposes the live-data receiver at this legacy path.
+        url = url .. "/api/minetest",
         extra_headers = extra_headers_auth_json,
         timeout = 5,
         post_data = minetest.write_json(stats),

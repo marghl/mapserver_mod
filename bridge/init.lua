@@ -36,7 +36,12 @@ function send_stats()
 		mapserver.bridge.add_airutils_planes(data)
 	end
 
-	mapserver.api.send_stats(data, function()
+	mapserver.api.send_stats(data, function(result)
+		if not result.succeeded or result.code ~= 200 then
+			mapserver.log("warning", "could not send live stats to mapserver"
+				.. " (code=" .. tostring(result.code)
+				.. ", error=" .. tostring(result.data) .. ")")
+		end
 		-- re-schedule
 		minetest.after(mapserver.send_interval, send_stats)
 	end)
